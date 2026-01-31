@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, ActivityIn
 import axios from 'axios';
 
 // The base URL now points to your live Render server
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || "https://rbt-verification-system.onrender.com";
+const API_BASE_URL = "/api";
 
 const VerificationScreen = ({ type, onBack }) => {
   const [loading, setLoading] = useState(false);
