@@ -1,6 +1,11 @@
-fastapi
-uvicorn
-beautifulsoup4
-python-multipart
-google-generativeai
-pydantic
+fastapi==0.128.0
+uvicorn==0.40.0
+google-generativeai==0.8.6
+python-dotenv==1.2.1
+python-multipart==0.0.22
+beautifulsoup4==4.14.3
+requests==2.32.5
+pydantic==2.12.5
+# Add these if you are handling PDF/Word:
+python-docx
+pypdfs
