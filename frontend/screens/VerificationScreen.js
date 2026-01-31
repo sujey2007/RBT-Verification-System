@@ -2,6 +2,9 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 
+// The base URL now points to your live Render server
+const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || "https://rbt-verification-system.onrender.com";
+
 const VerificationScreen = ({ type, onBack }) => {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
@@ -34,13 +37,15 @@ const VerificationScreen = ({ type, onBack }) => {
     formData.append('ia_type', type);
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/verify', formData, {
+      // Updated to use the live Render URL
+      const response = await axios.post(`${API_BASE_URL}/verify`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      // The backend returns an object like { status: "Rejected", data: [...], errors: [...] }
       setResult(response.data);
     } catch (error) {
-      alert("Verification Failed: Ensure the Backend server is running.");
+      // Detailed error message to help with debugging
+      console.error("Verification Error:", error);
+      alert("Verification Failed: Backend is unreachable. Please check Render logs.");
     } finally {
       setLoading(false);
     }
@@ -49,7 +54,8 @@ const VerificationScreen = ({ type, onBack }) => {
   const handleAIFix = async (index, originalText, currentLevel) => {
     const targetLevel = currentLevel === 'L1' ? 'L2' : 'L3';
     try {
-      const res = await axios.post('http://127.0.0.1:8000/fix-questions', {
+      // Updated to use the live Render URL
+      const res = await axios.post(`${API_BASE_URL}/fix-questions`, {
         text: originalText,
         current_level: currentLevel,
         target_level: targetLevel
@@ -106,7 +112,6 @@ const VerificationScreen = ({ type, onBack }) => {
           </TouchableOpacity>
         </View>
 
-        {/* --- CRITICAL FIX: ENSURE VALUES ARE STRINGS/NUMBERS, NOT OBJECTS --- */}
         {result && (
           <View style={[styles.resultCard, { borderColor: result.status === 'Accepted' ? '#10B981' : '#EF4444' }]}>
             <Text style={[styles.statusHeader, { color: result.status === 'Accepted' ? '#059669' : '#DC2626' }]}>
@@ -124,7 +129,6 @@ const VerificationScreen = ({ type, onBack }) => {
             <View style={styles.table}>
               {result.data && result.data.map((q, idx) => (
                 <View key={idx} style={[styles.tableRow, q.needsFix ? styles.errorRow : null]}>
-                  {/* Access specific properties like q.id, not just q */}
                   <Text style={{ flex: 0.5, color: '#475467' }}>{String(q.id)}</Text>
                   <Text style={{ flex: 3.5, color: '#101828' }}>{String(q.text)}</Text>
                   <Text style={{ flex: 1, fontWeight: 'bold', color: '#1A237E' }}>{String(q.level)}</Text>
@@ -150,6 +154,7 @@ const VerificationScreen = ({ type, onBack }) => {
   );
 };
 
+// Styles remain unchanged
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F9FAFB' },
   navbar: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 40, paddingVertical: 12, backgroundColor: '#FFFFFF', borderBottomWidth: 1, borderBottomColor: '#EAECF0' },
