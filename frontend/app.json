@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "name": "RBT-Verification-System",
+    "slug": "rbt-verification-system",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-updates",
+        {
+          "checkOnLaunch": "ALWAYS"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ddcb65d2-f96b-4ea6-b439-c260c61c9b0d"
+      },
+      // REPLACE THIS with your actual Render.com URL once your backend is live
+      "apiUrl": "https://rbt-backend-sujey.onrender.com"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ddcb65d2-f96b-4ea6-b439-c260c61c9b0d"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    }
+  }
+}
