@@ -2,16 +2,22 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import parser_engine
 import rbt_validator
-# FIX: Removed 'backend.' prefix because Render runs from inside the backend folder
+# IMPORT FIX: Render runs from inside 'backend', so we use direct imports
 import ai_assistant 
 
 app = FastAPI(title="CIT RBT Verification API")
 
-# Enable CORS so your Expo frontend can communicate with this server
+# SECURITY FIX: Explicitly allowing your Vercel frontend and local testing
+origins = [
+    "https://rbt-verification-system.vercel.app", # Your live frontend
+    "http://localhost:8081",                      # Local Expo development
+    "http://localhost:19006",                     # Alternative Expo port
+]
+
 app.add_middleware(
     CORSMiddleware,
-    # In production, replace "*" with your actual Vercel URL for better security
-    allow_origins=["*"], 
+    allow_origins=origins, 
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -88,7 +94,7 @@ async def fix_questions(data: dict):
         if not original_text:
             raise HTTPException(status_code=400, detail="Question text is required.")
 
-        # Fixed reference to the rephrase function
+        # Fixed reference to the rephrase function in ai_assistant.py
         new_text = ai_assistant.rephrase_question(original_text, current_level, target_level)
         return {"corrected_text": new_text}
         
