@@ -2,14 +2,16 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import parser_engine
 import rbt_validator
-import backend.ai_assistant as ai_assistant
+# FIX: Removed 'backend.' prefix because Render runs from inside the backend folder
+import ai_assistant 
 
 app = FastAPI(title="CIT RBT Verification API")
 
 # Enable CORS so your Expo frontend can communicate with this server
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    # In production, replace "*" with your actual Vercel URL for better security
+    allow_origins=["*"], 
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -32,11 +34,10 @@ async def verify_paper(
         # 1. Read the uploaded file content
         content = await file.read()
         
-        # Determine file type and decode (assuming HTML for your CIT template)
+        # Determine file type and decode
         try:
             html_data = content.decode("utf-8")
         except UnicodeDecodeError:
-            # Fallback for different encodings if necessary
             html_data = content.decode("latin-1")
 
         # 2. Extract question data using the parser engine
@@ -55,7 +56,6 @@ async def verify_paper(
             
         # 4. Validate Academic Rules (40/40/20 and Part A splits)
         errors = []
-        # Convert type to uppercase for consistent checking
         type_upper = ia_type.upper()
         
         if "IA" in type_upper:
@@ -88,12 +88,14 @@ async def fix_questions(data: dict):
         if not original_text:
             raise HTTPException(status_code=400, detail="Question text is required.")
 
+        # Fixed reference to the rephrase function
         new_text = ai_assistant.rephrase_question(original_text, current_level, target_level)
         return {"corrected_text": new_text}
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"AI Fix Error: {str(e)}")
 
+# This block is for local development only
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="127.0.0.1", port=8000)
