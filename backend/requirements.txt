@@ -8,4 +8,4 @@ requests==2.32.5
 pydantic==2.12.5
 # Add these if you are handling PDF/Word:
 python-docx
-pypdfs
+pypdf
