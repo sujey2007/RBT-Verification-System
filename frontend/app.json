@@ -40,8 +40,7 @@
       "eas": {
         "projectId": "ddcb65d2-f96b-4ea6-b439-c260c61c9b0d"
       },
-      // REPLACE THIS with your actual Render.com URL once your backend is live
-      "apiUrl": "https://rbt-backend-sujey.onrender.com"
+      "apiUrl": "https://rbt-verification-system.onrender.com"
     },
     "updates": {
       "url": "https://u.expo.dev/ddcb65d2-f96b-4ea6-b439-c260c61c9b0d"
