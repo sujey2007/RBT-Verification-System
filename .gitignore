@@ -1,0 +1,12 @@
+# Ignore dependencies
+node_modules/
+backend/venv/
+__pycache__/
+
+# Ignore build files
+dist/
+.expo/
+build/
+
+# Ignore local environment variables
+.env

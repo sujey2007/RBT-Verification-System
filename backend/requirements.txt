@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+beautifulsoup4
+python-multipart
+google-generativeai
+pydantic

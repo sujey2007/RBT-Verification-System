@@ -1,0 +1,26 @@
+from bs4 import BeautifulSoup
+
+def parse_html(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    questions = []
+    rows = soup.find_all('tr')
+    
+    current_part = "A"
+    for row in rows:
+        cells = row.find_all('td')
+        text = row.get_text().lower()
+        
+        if "part - b" in text: current_part = "B"
+        elif "part - c" in text: current_part = "C"
+        
+        if len(cells) >= 4:
+            q_id = cells[0].get_text().strip()
+            if q_id.isdigit():
+                questions.append({
+                    "id": q_id,
+                    "text": cells[1].get_text().strip(),
+                    "co": cells[2].get_text().strip(),
+                    "marks": int(cells[3].get_text().strip() or 2),
+                    "part": current_part
+                })
+    return questions
